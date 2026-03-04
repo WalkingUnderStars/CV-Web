@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
       'cta-titlu': 'Ai un proiect în minte?',
       'cta-text':
         'Sunt disponibil pentru colaborări freelance în development web, consultanță IT sau orice altă oportunitate interesantă. Hai să discutăm!',
-      'btnCTA': 'Trimite un Email',
+      btnCTA: 'Trimite un Email',
     },
     en: {
       'nav-acasa': 'Home',
@@ -36,14 +36,14 @@ document.addEventListener('DOMContentLoaded', function () {
       'cta-titlu': 'Have a project in mind?',
       'cta-text':
         "I am available for freelance collaborations in web development, IT consulting or any other interesting opportunity. Let's talk!",
-      'btnCTA': 'Send an Email',
+      btnCTA: 'Send an Email',
     },
   };
 
   let limbaActuala = 'ro';
   const btnLimba = document.querySelector('#btnLimba');
 
-  btnLimba.addEventListener('click', function() {
+  btnLimba.addEventListener('click', function () {
     if (limbaActuala === 'ro') {
       limbaActuala = 'en';
       btnLimba.textContent = 'RO';
@@ -111,3 +111,57 @@ const observatorAparitie = new IntersectionObserver(
 elementeAnimate.forEach(function (element) {
   observatorAparitie.observe(element);
 });
+
+const texteTitle = [
+  'Programator & Digital Banking Expert',
+  'Front-End Developer',
+  'Web Enthusiast',
+];
+
+let indexText = 0;
+let indexLitera = 0;
+let sterge = false;
+
+function scrieText() {
+  const elementTitle = document.querySelector('#hero-title');
+  const textCurent = texteTitle[indexText];
+
+  if (sterge) {
+    elementTitle.textContent = textCurent.substring(0, indexLitera - 1);
+    indexLitera--;
+
+    if (indexLitera === 0) {
+      sterge = false;
+      indexText = (indexText + 1) % texteTitle.length;
+    }
+
+    setTimeout(scrieText, 50);
+  } else {
+    elementTitle.textContent = textCurent.substring(0, indexLitera + 1);
+    indexLitera++;
+
+    if (indexLitera === textCurent.length) {
+      sterge = true;
+      setTimeout(scrieText, 2000);
+    } else {
+      setTimeout(scrieText, 100);
+    }
+  }
+}
+
+scrieText ();
+
+const btnBurger = document.querySelector('#btnBurger');
+const navLinks = document.querySelector('.nav-links');
+
+btnBurger.addEventListener('click', function() {
+  btnBurger.classList.toggle('activ');
+  navLinks.classList.toggle('activ');
+});
+
+navLinks.querySelectorAll('a').forEach(function(link) {
+  link.addEventListener('click', function() {
+    btnBurger.classList.remove('activ');
+    navLinks.classList.remove('activ');
+  })
+})
