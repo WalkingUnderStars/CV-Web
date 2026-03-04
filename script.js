@@ -149,19 +149,138 @@ function scrieText() {
   }
 }
 
-scrieText ();
+scrieText();
 
 const btnBurger = document.querySelector('#btnBurger');
 const navLinks = document.querySelector('.nav-links');
 
-btnBurger.addEventListener('click', function() {
+btnBurger.addEventListener('click', function () {
   btnBurger.classList.toggle('activ');
   navLinks.classList.toggle('activ');
 });
 
-navLinks.querySelectorAll('a').forEach(function(link) {
-  link.addEventListener('click', function() {
+navLinks.querySelectorAll('a').forEach(function (link) {
+  link.addEventListener('click', function () {
     btnBurger.classList.remove('activ');
     navLinks.classList.remove('activ');
-  })
-})
+  });
+});
+
+const canvas = document.getElementById('sakura');
+const ctx = canvas.getContext('2d');
+
+function redimensioneaza() {
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+}
+redimensioneaza();
+window.addEventListener('resize', redimensioneaza);
+
+function deseneazaRamura(ramura, progres) {
+  const x2 = ramura.x1 + (ramura.x2 - ramura.x1) * progres;
+  const y2 = ramura.y1 + (ramura.y2 - ramura.y1) * progres;
+
+  ctx.beginPath();
+  ctx.moveTo(ramura.x1, ramura.y1);
+  ctx.lineTo(x2, y2);
+  ctx.strokeStyle = '#4a2c0a';
+  ctx.lineWidth = ramura.grosime;
+  ctx.lineCap = 'round';
+  ctx.stroke();
+}
+
+function deseneazaFloare(flaore, opacitate) {
+  const petale = 5;
+
+  for (let i = 0; i < petale; i++) {
+    const unghi = (i / petale) * Math.PI * 2;
+    const px = flaore.x + Math.cos(unghi) * flaore.raza;
+    const py = flaore.y + Math.sin(unghi) * flaore.raza;
+
+    ctx.beginPath();
+    ctx.arc(px, py, flaore.raza * 0.6, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255, 182, 193, ${opacitate})`;
+    ctx.fill();
+  }
+
+  ctx.beginPath();
+  ctx.arc(flaore.x, flaore.y, flaore.raza * 0.4, 0, Math.PI * 2);
+  ctx.fillStyle = `rgba(255, 220, 100, ${opacitate})`;
+  ctx.fill();
+}
+
+let progresAnimatie = 0;
+function animeaza() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const ramuri = [
+    {
+      x1: 0,
+      y1: canvas.height,
+      x2: canvas.width * 0.15,
+      y2: canvas.height * 0.7,
+      grosime: 6,
+    },
+    {
+      x1: canvas.width * 0.15,
+      y1: canvas.height * 0.7,
+      x2: canvas.width * 0.25,
+      y2: canvas.height * 0.4,
+      grosime: 4,
+    },
+    {
+      x1: canvas.width * 0.25,
+      y1: canvas.height * 0.4,
+      x2: canvas.width * 0.4,
+      y2: canvas.height * 0.2,
+      grosime: 3,
+    },
+    {
+      x1: canvas.width * 0.25,
+      y1: canvas.height * 0.4,
+      x2: canvas.width * 0.35,
+      y2: canvas.height * 0.35,
+      grosime: 2,
+    },
+    {
+      x1: canvas.width * 0.15,
+      y1: canvas.height * 0.7,
+      x2: canvas.width * 0.08,
+      y2: canvas.height * 0.5,
+      grosime: 2,
+    },
+  ];
+
+  const flori = [
+    { x: canvas.width * 0.4, y: canvas.height * 0.2, raza: 12, apar: 0.7 },
+    { x: canvas.width * 0.35, y: canvas.height * 0.35, raza: 10, apar: 0.6 },
+    { x: canvas.width * 0.08, y: canvas.height * 0.5, raza: 10, apar: 0.5 },
+    { x: canvas.width * 0.25, y: canvas.height * 0.38, raza: 8, apar: 0.65 },
+    { x: canvas.width * 0.18, y: canvas.height * 0.65, raza: 9, apar: 0.4 },
+    { x: canvas.width * 0.3, y: canvas.height * 0.28, raza: 8, apar: 0.75 },
+    { x: canvas.width * 0.12, y: canvas.height * 0.55, raza: 7, apar: 0.45 },
+  ];
+
+  progresAnimatie += 0.003;
+
+  if (progresAnimatie > 1) {
+    progresAnimatie = 1;
+  }
+
+  ramuri.forEach(function (ramura) {
+    deseneazaRamura(ramura, progresAnimatie);
+  });
+
+  flori.forEach(function (flaore) {
+    if (progresAnimatie >= flaore.apar) {
+      const opacitate = (progresAnimatie - flaore.apar) / (1 - flaore.apar);
+      deseneazaFloare(flaore, Math.min(opacitate, 1));
+    }
+  });
+
+  if (progresAnimatie < 1) {
+    requestAnimationFrame(animeaza);
+  }
+}
+
+animeaza();
