@@ -62,6 +62,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
+  const btnTema = document.querySelector('#btnTema');
+  let temaActuala = 'dark';
+
+  btnTema.addEventListener('click', function() {
+    if (temaActuala === 'dark') {
+      temaActuala = 'light';
+      document.documentElement.classList.add('light');
+      btnTema.textContent = 'Dark';
+    } else {
+      temaActuala = 'dark';
+      document.documentElement.classList.remove('light');
+      btnTema.textContent = 'Light';
+    }
+  });
+
   const header = document.querySelector('header');
   window.addEventListener('scroll', function () {
     if (window.scrollY > 50) {
