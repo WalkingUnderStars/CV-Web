@@ -162,6 +162,14 @@ section {
   color: var(--culoare-dark);
 }
 
+.nav-butoane .btn-icon {
+  display: none;
+}
+
+.nav-butoane .btn-text {
+  display: inline;
+}
+
 .hero {
   min-height: 100vh;
   display: flex;
@@ -184,7 +192,7 @@ section {
     rgba(245, 197, 24, 0.08) 0%,
     transparent 70%
   );
-  border-radius: 59%;
+  border-radius: 50%;
   pointer-events: none;
 }
 
@@ -602,6 +610,7 @@ section {
 @media (max-width: 768px) {
   nav {
     padding: 16px 20px;
+    position: relative;
   }
 
   .nav-links {
@@ -626,6 +635,13 @@ section {
   .nav-links a {
     font-size: 24px;
     letter-spacing: 4px;
+  }
+
+  .nav-butoane {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-right: 50px;
   }
 
   .hero {
@@ -656,6 +672,30 @@ section {
 
   .btn-burger {
     display: flex;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .nav-butoane .btn-icon {
+  display: block;
+}
+
+.nav-butoane .btn-text {
+  display: none;
+}
+
+  .btn-limba,
+  .btn-tema {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
   }
 
   .nav-links a:hover {
